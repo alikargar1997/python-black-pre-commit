@@ -1,0 +1,38 @@
+#!/bin/bash
+
+PROJECT_DIR=$(dirname $(dirname $(cd "$(dirname "$0")" && pwd)))
+changed_files=( $( git diff --name-only --diff-filter=ACMRTUXB --cached) )
+
+for i in ${changed_files[@]} 
+do 
+if [[ "$i" =~ ^.*.py$ ]] 
+then
+python_staged_files+=( "$i" ) 
+fi
+done
+
+echo "Checking for formatting following files : "
+for i in ${python_staged_files[@]}; do   echo $i; done
+
+
+cd $PROJECT_DIR && black --check --quiet "${python_staged_files[@]}"
+
+black_status=$?
+echo  $black_status
+
+if [ $black_status == 0 ]
+then
+    echo "All files are formatted!"
+
+elif [ $black_status == 1 ]
+then
+    echo "Start formattiong..."
+
+    cd $PROJECT_DIR  && black "${python_staged_files[@]}"
+    cd $PROJECT_DIR  && isort "${python_staged_files[@]}" --profile black --skip __init__.py
+    cd $PROJECT_DIR && git add "${python_staged_files[@]}"
+    exit 0
+else 
+    echo "Internal black Error"
+    exit 1
+fi
