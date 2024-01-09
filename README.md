@@ -19,3 +19,6 @@ That's it! Now, every time you commit some changes, the script will run black an
 
 How to contribute?
 If you want to contribute to this project, you are welcome to do so. Please follow the contribution guidelines and make sure your code passes the script before submitting a pull request.
+
+
+<meta name="google-site-verification" content="AGINEvsGJAerKa0o0AgSyhy0CCPdibHR6qfxwi4XHkw" />
